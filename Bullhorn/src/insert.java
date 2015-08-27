@@ -36,22 +36,27 @@ public class insert extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+
+	if(request.getParameter("action").equals("add"))
+		{
 		message = "";
+		
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		EntityTransaction trans = em.getTransaction();
 		model.Bullhorn bull = new model.Bullhorn();
 		trans.begin();
-		System.out.println("first");
+		System.out.println(request.getParameter("action"));
+		//System.out.println("first");
 		try {
 			
 			//String id = request.getParameter("id");
 			//bull.setId(Integer.parseInt(id));
-			System.out.println("2");
+			//System.out.println("2");
 			String post = request.getParameter("post");
 			bull.setPost(post);
-			System.out.println("3");
+			//System.out.println("3");
 			em.persist(bull);
-			System.out.println("4");
+			//System.out.println("4");
 			trans.commit();
 			
 		} catch (Exception e) {
@@ -72,41 +77,31 @@ public class insert extends HttpServlet {
 
 		getServletContext().getRequestDispatcher("/output.jsp").forward(request, response);
 	}
-		
-		
-		/*long i=0;
-		
-		message +="<div class=\"container\">";
-		try {
-			System.out.println("While");
-			while(em.find(model.Bullhorn.class, i)!=null)
-			{
-				System.out.println("Befor");
-			bull = em.find(model.Bullhorn.class, i);
-			System.out.println("After");
-			i++;
-			//message +=" <p>"+bull.getPost()+"</p>";
-			System.out.println(bull.getPost());
-			message +=" <div class=\"panel panel-primary\"> <div class=\"panel-heading\">"+bull.getId()+"</div> <div class=\"panel-body\">"+bull.getPost()+"</div> </div>";
-			}
-		} catch (Exception e){
-			System.out.println(e);
-		} finally {
-			em.close();
-			 response.setContentType("text/html");
-			 message +="</div>";
-			  request.setAttribute("message", message);
-			 getServletContext()
-		      .getRequestDispatcher("/output.jsp")
-		      .forward(request,  response);
-		}
-		
-		
-		
+	
+	else if(request.getParameter("action").equals("view"))
+	{
+		System.out.println("ffff");
+		 message = "";
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		EntityTransaction trans = em.getTransaction();
+		model.Bullhorn bull = new model.Bullhorn();
+		String q="select b from Bullhorn b order by b.id desc";
 
-		
-		
+		TypedQuery<Bullhorn>bq =em.createQuery(q,Bullhorn.class);
+
+		List<Bullhorn> list=bq.getResultList();
+
+		for(Bullhorn temp:list)
+
+			message+=temp.getPost()+"<br>";
+
+		request.setAttribute("message", message);
+
+		getServletContext().getRequestDispatcher("/output.jsp").forward(request, response);
+
 	}
+	}	
+	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
@@ -115,7 +110,7 @@ public class insert extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		doGet(request, response);
+			doGet(request, response);
 	}
 
 }
