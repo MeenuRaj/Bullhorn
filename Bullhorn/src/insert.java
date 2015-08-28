@@ -45,8 +45,6 @@ public class insert extends HttpServlet {
 		EntityTransaction trans = em.getTransaction();
 		model.Bullhorn bull = new model.Bullhorn();
 		trans.begin();
-		System.out.println(request.getParameter("action"));
-		//System.out.println("first");
 		try {
 			
 			//String id = request.getParameter("id");
@@ -74,13 +72,10 @@ public class insert extends HttpServlet {
 		message+=temp.getPost()+"<br>";
 
 		request.setAttribute("message", message);
-
-		getServletContext().getRequestDispatcher("/output.jsp").forward(request, response);
 	}
 	
 	else if(request.getParameter("action").equals("view"))
 	{
-		System.out.println("ffff");
 		 message = "";
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		EntityTransaction trans = em.getTransaction();
@@ -96,10 +91,8 @@ public class insert extends HttpServlet {
 			message+=temp.getPost()+"<br>";
 
 		request.setAttribute("message", message);
-
-		getServletContext().getRequestDispatcher("/output.jsp").forward(request, response);
-
 	}
+	getServletContext().getRequestDispatcher("/output.jsp").forward(request, response);
 	}	
 	
 

@@ -24,8 +24,7 @@
 			<ul class="dropdown-menu">
 				<li><a href="#"></a>
 					<div class="container">
-						<form  action="post.jsp" >
-							
+						<form  action="login"  method = "post">							
 							<div class="form-group">
 								<label class="control-label col-sm-5">Username: </label>
 								<div class="col-sm-5">
