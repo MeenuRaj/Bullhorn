@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Posts</title>
+<title>Profile</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -13,9 +13,10 @@
 </head>
 <body>
 
+
 <div class="container">
-  <form role="form" action="search" method="post">
-  	<input type="hidden" name="action" value="allposts"/>
+ <form role="form" action="search" method="post">
+  	<input type="hidden" name="action" value="userposts"/>
     <div class="form-group">
       <label for="email">Search:</label>
       <input type="text" class="form-control" id="search" name ="search">
@@ -24,6 +25,8 @@
     <button type="submit" class="btn btn-default">Submit</button>
   </form>
 </div>
-${message}
+
+${profile}
+${posts}
 </body>
 </html>

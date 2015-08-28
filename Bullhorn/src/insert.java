@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import model.Bullhorn;
 import customTools.DBUtil;
@@ -36,10 +37,12 @@ public class insert extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-
+		message= "<div class=\"container\"><table class=\"table table-striped\"><thead><tr><th>Posts</th></tr></thead><tbody>";
+		HttpSession session = request.getSession(true); 
+		String uid = (String) session.getAttribute("username");
 	if(request.getParameter("action").equals("add"))
 		{
-		message = "";
+	
 		
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		EntityTransaction trans = em.getTransaction();
@@ -47,36 +50,30 @@ public class insert extends HttpServlet {
 		trans.begin();
 		try {
 			
-			//String id = request.getParameter("id");
-			//bull.setId(Integer.parseInt(id));
-			//System.out.println("2");
 			String post = request.getParameter("post");
 			bull.setPost(post);
-			//System.out.println("3");
+			bull.setUsername(uid);
 			em.persist(bull);
-			//System.out.println("4");
 			trans.commit();
 			
 		} catch (Exception e) {
 			System.out.println("ERROR:" + e);
-			trans.rollback();
 		} 
 		String q="select b from Bullhorn b order by b.id desc";
 
 		TypedQuery<Bullhorn>bq =em.createQuery(q,Bullhorn.class);
 
 		List<Bullhorn> list=bq.getResultList();
-
 		for(Bullhorn temp:list)
-
-		message+=temp.getPost()+"<br>";
-
+			message += "<tr><td>"+temp.getPost()+"</td><td><a href=\"profile?user="+temp.getUsername()+"\">"+temp.getUsername()+"</a></td></tr>\n";
+		//message+=temp.getPost()+"<br>";
+		message+= "</tbody> </table></div>";
 		request.setAttribute("message", message);
 	}
 	
 	else if(request.getParameter("action").equals("view"))
 	{
-		 message = "";
+
 		EntityManager em = DBUtil.getEmFactory().createEntityManager();
 		EntityTransaction trans = em.getTransaction();
 		model.Bullhorn bull = new model.Bullhorn();
@@ -87,9 +84,13 @@ public class insert extends HttpServlet {
 		List<Bullhorn> list=bq.getResultList();
 
 		for(Bullhorn temp:list)
-
-			message+=temp.getPost()+"<br>";
-
+		{	
+		if(temp.getPost() != null)
+		{
+			message += "<tr><td>"+temp.getPost()+"</td><td><a href=\"profile?user="+temp.getUsername()+"\">"+temp.getUsername()+"</a></td></tr>\n";
+		}
+		}
+		message+= "</tbody> </table></div>";
 		request.setAttribute("message", message);
 	}
 	getServletContext().getRequestDispatcher("/output.jsp").forward(request, response);

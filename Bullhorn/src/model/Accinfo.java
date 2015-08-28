@@ -4,11 +4,13 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import java.util.Date;
+
 
 /**
  * The persistent class for the ACCINFO database table.
  * 
- */ 
+ */
 @Entity
 @Table(name="Accinfo", schema="TESTDB")
 @NamedQuery(name="Accinfo.findAll", query="SELECT a FROM Accinfo a")
@@ -19,9 +21,15 @@ public class Accinfo implements Serializable {
 	@Column(name="A_ID")
 	private long aId;
 
-	private String password;
+	@Temporal(TemporalType.DATE)
+	private Date dates;
 
-	private String username;
+	@Column(name="F_NAME")
+	private String fName;
+
+	private String moto;
+
+	private String password;
 
 	public Accinfo() {
 	}
@@ -34,20 +42,36 @@ public class Accinfo implements Serializable {
 		this.aId = aId;
 	}
 
+	public Date getDates() {
+		return this.dates;
+	}
+
+	public void setDates(Date dates) {
+		this.dates = dates;
+	}
+
+	public String getFName() {
+		return this.fName;
+	}
+
+	public void setFName(String fName) {
+		this.fName = fName;
+	}
+
+	public String getMoto() {
+		return this.moto;
+	}
+
+	public void setMoto(String moto) {
+		this.moto = moto;
+	}
+
 	public String getPassword() {
 		return this.password;
 	}
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public String getUsername() {
-		return this.username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
 	}
 
 }

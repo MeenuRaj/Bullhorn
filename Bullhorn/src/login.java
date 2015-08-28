@@ -11,7 +11,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import model.Accinfo;
 import model.Bullhorn;
 import customTools.DBUtil;
 
@@ -25,7 +27,7 @@ public class login extends HttpServlet {
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public login() {
+    public login() { 
         super();
         // TODO Auto-generated constructor stub
     }
@@ -35,34 +37,49 @@ public class login extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		EntityManager em = DBUtil.getEmFactory().createEntityManager();
-		EntityTransaction trans = em.getTransaction();
-		//model.Bullhorn bull = new model.Bullhorn();
-		model.Accinfo acc = new model.Accinfo();
 		
-		try {
-			
+	//	username = request.getParameter("username");
+		String[] strs = new String[2];
+		String table = "";
+		
+		
+		
+		
+		
+		
+		EntityManager em = DBUtil.getEmFactory().createEntityManager();
+		model.Accinfo acc = new model.Accinfo();
+		String username = "";
+		String password = "";
+		String message = "";
+		HttpSession session = request.getSession();
+
 			//String id = request.getParameter("id");
 			//bull.setId(Integer.parseInt(id));
 			//System.out.println("2");
-			String username = request.getParameter("username");
-			acc.setUsername(username);
-			String password = request.getParameter("password");
-			acc.setUsername(password);
-		} catch (Exception e) {
-			System.out.println("ERROR:" + e);
-		} 
-			String q="select b from accInfo b where b.username= '" +username +"' and b.password = '" +password+ "'";
-
-			TypedQuery<Bullhorn>bq =em.createQuery(q,Bullhorn.class);
-
-			List<Bullhorn> list=bq.getResultList();
-
-			for(Bullhorn temp:list)
+			username = request.getParameter("username"); 
+			password = request.getParameter("password");
+//			acc.setUsername(password);
+			session.setAttribute("username", username);
+			String q="select a from Accinfo a where a.fName = '"+username+"'";
+			System.out.println(""+q);
+			TypedQuery<Accinfo>aq =em.createQuery(q,Accinfo.class);
+			System.out.println(""+aq);
+			List<Accinfo> list1=aq.getResultList();
+			System.out.println("query reult:"+aq.getResultList());
+			if (list1 == null || list1.isEmpty())
+			{
+				message = "Incorrect username or password";
+				response.setContentType("text/html");
+				request.setAttribute("message", message);
+				getServletContext().getRequestDispatcher("/output.jsp").forward(request, response);
+			}
+			else	
+				getServletContext().getRequestDispatcher("/post.jsp").forward(request, response);
+}
+	
 			
-			
-		getServletContext().getRequestDispatcher("/post.jsp").forward(request, response);
-	}
+	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

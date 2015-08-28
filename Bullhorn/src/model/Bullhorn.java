@@ -20,6 +20,8 @@ public class Bullhorn implements Serializable {
 
 	private String post;
 
+	private String username;
+
 	public Bullhorn() {
 	}
 
@@ -37,6 +39,14 @@ public class Bullhorn implements Serializable {
 
 	public void setPost(String post) {
 		this.post = post;
+	}
+
+	public String getUsername() {
+		return this.username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 }
